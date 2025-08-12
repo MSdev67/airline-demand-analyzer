@@ -1,7 +1,5 @@
 # Airline Booking Market Demand Analysis Web App
 
-![App Screenshot](static/images/screenshot.png) *Example screenshot placeholder*
-
 A Python web application that scrapes and analyzes airline booking market demand data to help hostel businesses optimize their operations near airports.
 
 ## Features
