@@ -1,0 +1,10 @@
+Flask==2.3.2
+Flask-SQLAlchemy==3.0.3
+beautifulsoup4==4.12.2
+requests==2.31.0
+pandas==2.0.3
+plotly==5.15.0
+python-dotenv==1.0.0
+openai==0.27.8
+lxml==4.9.2
+flask-socketio==5.3.4

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container animate__animated animate__fadeIn">
+    <div class="row mb-5">
+        <div class="col-md-8 mx-auto text-center">
+            <h1 class="display-4 mb-3">Airline Booking Market Demand</h1>
+            <p class="lead">Analyze flight demand trends to optimize your hostel business strategy</p>
+        </div>
+    </div>
+    
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-lg animate__animated animate__fadeInUp">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Search Filters</h3>
+                </div>
+                <div class="card-body">
+                    <form action="/analyze" method="POST">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="origin" class="form-label">Origin Airport</label>
+                                <select class="form-select" id="origin" name="origin">
+                                    <option value="SYD">Sydney (SYD)</option>
+                                    <option value="MEL">Melbourne (MEL)</option>
+                                    <option value="BNE">Brisbane (BNE)</option>
+                                    <option value="PER">Perth (PER)</option>
+                                    <option value="ADL">Adelaide (ADL)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="destination" class="form-label">Destination Airport</label>
+                                <select class="form-select" id="destination" name="destination">
+                                    <option value="MEL">Melbourne (MEL)</option>
+                                    <option value="SYD">Sydney (SYD)</option>
+                                    <option value="BNE">Brisbane (BNE)</option>
+                                    <option value="PER">Perth (PER)</option>
+                                    <option value="ADL">Adelaide (ADL)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="start_date" class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="start_date" name="start_date">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="end_date" class="form-label">End Date</label>
+                                <input type="date" class="form-control" id="end_date" name="end_date">
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">
+                                    <i class="fas fa-chart-line me-2"></i> Analyze Demand
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-md-4 animate__animated animate__fadeInLeft">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-route fa-3x text-primary mb-3"></i>
+                    <h3>Popular Routes</h3>
+                    <p class="text-muted">Discover the most booked flight routes in Australia</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeInUp">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-money-bill-wave fa-3x text-success mb-3"></i>
+                    <h3>Price Trends</h3>
+                    <p class="text-muted">Analyze pricing patterns and fluctuations</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 animate__animated animate__fadeInRight">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="fas fa-calendar-alt fa-3x text-info mb-3"></i>
+                    <h3>Demand Patterns</h3>
+                    <p class="text-muted">Identify high and low demand periods</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

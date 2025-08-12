@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container animate__animated animate__fadeIn">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">Analysis Results: {{ origin }} to {{ destination }}</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Results</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-8">
+                {% for graph in graphs %}
+                    <div class="card mb-4 shadow-sm animate__animated animate__fadeInUp">
+                        <div class="card-body">
+                            <div id="graph-{{ loop.index }}" class="graph-container"></div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card mb-4 shadow-sm sticky-top animate__animated animate__fadeInRight">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Key Insights</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="insight-card mb-3">
+                            <h6><i class="fas fa-star me-2 text-warning"></i> Popular Routes</h6>
+                            <ul class="list-group list-group-flush">
+                                {% for route, count in trends.popular_routes.items() %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ route[0] }} to {{ route[1] }}
+                                        <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="insight-card mb-3">
+                            <h6><i class="fas fa-dollar-sign me-2 text-success"></i> Cheapest Airlines</h6>
+                            <ul class="list-group list-group-flush">
+                                {% for airline, price in trends.cheapest_airlines.items() %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ airline }}
+                                        <span class="badge bg-success rounded-pill">${{ "%.2f"|format(price) }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div class="insight-card">
+                            <h6><i class="fas fa-calendar-day me-2 text-primary"></i> Busiest Days</h6>
+                            <ul class="list-group list-group-flush">
+                                {% for day, percent in trends.demand_by_day.items() %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ day }}
+                                        <span class="badge bg-info rounded-pill">{{ "%.1f"|format(percent*100) }}%</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    // Render Plotly graphs
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for graph in graphs %}
+            var graphData = JSON.parse('{{ graph | safe }}');
+            Plotly.newPlot('graph-{{ loop.index }}', graphData.data, graphData.layout);
+        {% endfor %}
+    });
+</script>
+{% endblock %}

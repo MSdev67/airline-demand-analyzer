@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container animate__animated animate__fadeIn">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-gradient-primary-to-secondary text-white">
+                    <h3 class="card-title mb-0">AI Market Analyst Assistant</h3>
+                </div>
+                <div class="card-body">
+                    <div id="chat-container" class="mb-3" style="height: 400px; overflow-y: auto;">
+                        <div class="chat-message bot-message animate__animated animate__fadeInLeft">
+                            <div class="message-content">
+                                <strong>Analyst AI:</strong> Hello! I'm your airline market analyst assistant. 
+                                Ask me anything about flight demand trends, pricing patterns, or how they might 
+                                affect your hostel business.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="text" id="user-input" class="form-control" 
+                               placeholder="Ask about flight demand trends..." aria-label="Ask a question">
+                        <button class="btn btn-primary" type="button" id="send-btn">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                    
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">Try questions like: 
+                            "What are the busiest travel days from Sydney to Melbourne?" or 
+                            "How do flight prices typically change 3 months before departure?"
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const chatContainer = document.getElementById('chat-container');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        
+        function addMessage(content, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${isUser ? 'user-message animate__animated animate__fadeInRight' : 
+                                                          'bot-message animate__animated animate__fadeInLeft'}`;
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'message-content';
+            contentDiv.innerHTML = isUser ? `<strong>You:</strong> ${content}` : 
+                                           `<strong>Analyst AI:</strong> ${content}`;
+            
+            messageDiv.appendChild(contentDiv);
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+        
+        function sendMessage() {
+            const question = userInput.value.trim();
+            if (question) {
+                addMessage(question, true);
+                userInput.value = '';
+                
+                fetch('/get_ai_response', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: question })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    addMessage(data.response, false);
+                })
+                .catch(error => {
+                    addMessage("Sorry, I'm having trouble connecting to the analysis service.", false);
+                    console.error('Error:', error);
+                });
+            }
+        }
+        
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    });
+</script>
+{% endblock %}
